@@ -11,12 +11,12 @@ class UsersController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]
   end
 
-  if @user.save
-    flash[:notice] = "Welcome to Blocipedia #{@user.name}"
-    redirect_to root_path
-  else
-    flash.now[:alert] = "There was an error creating your account.  Please try again."
-    render :new_user_registration
-  end
+  # if @user.save
+  #   flash[:notice] = "Welcome to Blocipedia #{@user.name}"
+  #   redirect_to root_path
+  # else
+  #   flash.now[:alert] = "There was an error creating your account.  Please try again."
+  #   render :new_user_registration
+  # end
 
 end
