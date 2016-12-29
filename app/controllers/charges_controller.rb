@@ -1,24 +1,30 @@
 class ChargesController < ApplicationController
 
-  def new
+  after_action :upgrade_account, only: [:create]
 
+  @amount = 15_00
+
+  def new
+    @stripe_btn_data = {
+      key: "#{ Rails.configuration.stripe[:publishable_key] }",
+      description: "Blocipedia Premium Account - #{current_user.email}",
+      amount: @amount
+    }
   end
 
   def create
 
-    #Amount in cents
-    @amount = 15_00
 
     customer = Stripe::Customer.create(
-      :email => params[:stripeEmail],
-      :source => params[:stripeToken]
+      email: current_user.email,
+      card: params[:stripeToken]
     )
 
     charge = Stripe::Charge.create(
-      :customer => customer.id,
-      :amount => @amount,
-      :description => 'Blocipedia Premium Account - #{current_user.email}',
-      :currency => 'usd'
+      customer: customer.id,
+      amount: @amount,
+      description: 'Blocipedia Premium Account - #{current_user.email}',
+      currency: 'usd'
     )
 
     flash[:notice] = "Thanks for all the money, #{current_user.email}!  You will surely regret this purchase."
@@ -29,6 +35,12 @@ class ChargesController < ApplicationController
       flash[:error] = e.message
       redirect_to new_charge_path
 
+  end
+
+  private
+
+  def upgrade_account
+    current_user.update_attribute(:role, 'premium')
   end
 
 end

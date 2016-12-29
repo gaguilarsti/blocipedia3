@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:new, :create]
 
-  resources :charges 
+  resources :charges, only: [:new, :create]
 
   # get 'welcome/index'
   #
