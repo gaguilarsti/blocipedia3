@@ -23,6 +23,7 @@ gem 'pry'
 gem 'devise'
 #gem 'bcrypt'
 gem 'pundit'
+gem 'stripe'
 
 group :development, :test do
   gem 'byebug'
