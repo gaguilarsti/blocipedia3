@@ -11,9 +11,9 @@ require 'random_data'
 #create users
 5.times do
   User.create!(
-    name: RandomData.random_name,
-    email: RandomData.random_email,
-    password: RandomData.random_sentence
+    name: Faker::Name.name,
+    email: Faker::Internet.safe_email,
+    password: Faker::Internet.password(6)
   )
 end
 
@@ -23,9 +23,9 @@ users = User.all
 
 15.times do
   Wiki.create!(
-    title: RandomData.random_sentence,
-    body: RandomData.random_paragraph,
-    user: users.sample 
+    title: Faker::Lorem.sentence,
+    body: Faker::Lorem.paragraph(3),
+    user: users.sample
   )
 end
 
@@ -69,13 +69,13 @@ user.update_attributes!(
   # role: 'admin'
 )
 
-# #create an admin user
-# admin = User.create!(
-#   name: 'Admin User',
-#   email: 'admin@example.com',
-#   password: 'helloworld',
-#   role: 'admin'
-# )
+#create an admin user
+admin = User.create!(
+  name: 'Admin User',
+  email: 'admin@example.com',
+  password: 'helloworld',
+  role: 'admin'
+)
 #
 # #create a member user
 # member = User.create!(
