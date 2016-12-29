@@ -5,6 +5,16 @@ class ChargesController < ApplicationController
   @amount = 15_00
 
   def new
+    authorize :charges, :new?
+
+    if current_user.role == 'premium'
+      flash[:alert] = "You are already a premium member."
+      redirect_to root_path
+    elsif current_user.role == 'admin'
+      flash[:alert] = "You are already an admin so you don't need to pay."
+      redirect_to root_path
+    end
+
     @stripe_btn_data = {
       key: "#{ Rails.configuration.stripe[:publishable_key] }",
       description: "Blocipedia Premium Account - #{current_user.email}",
@@ -13,7 +23,7 @@ class ChargesController < ApplicationController
   end
 
   def create
-
+    authorize :charges, :create? 
 
     customer = Stripe::Customer.create(
       email: current_user.email,
