@@ -30,7 +30,7 @@ class WikiPolicy < ApplicationPolicy
 
   def destroy?
     # only the wiki owner or an admin can delete a wiki
-    @user.admin?
+    @user.role == "admin" || @wiki.user == user
   end
 
 end
