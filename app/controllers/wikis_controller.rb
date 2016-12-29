@@ -67,12 +67,13 @@ class WikisController < ApplicationController
 
     authorize @wiki
 
-    if @wiki.destroy && (current_user == @wiki.user || current_user.admin?)
+    if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
       redirect_to wikis_path
     else
       flash.now[:alert] = "There was an error deleting the Wiki.  Please try again."
       render :show
+      redirect_to @wiki 
     end
   end
 
