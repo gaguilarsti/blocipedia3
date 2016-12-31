@@ -14,6 +14,6 @@
 
 <% elsif current_user.premium? %>
   <h5>Not loving the premium experience?</h5>
-  <%= button_to "Downgrade my account", downgrade_url, data: { confirm: "Are you sure?  Note: Your Wikis will all become public!" }, class: 'btn btn-default' %>
+  <%= button_to "Downgrade my account", users_downgrade_path, data: { confirm: "Are you sure?  Note: Your Wikis will all become public!" }, class: 'btn btn-default' %>
 <% end %>
 <%= link_to "Edit Profile", edit_user_registration_path, class: 'btn btn-default' %>

@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  # get 'wikis/index'
-  #
-  # get 'wikis/show'
-  #
-  # get 'wikis/new'
-  #
-  # get 'wikis/edit'
 
   resources :wikis
 
@@ -13,13 +6,16 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     get "users/show"
+    get "users/downgrade"
+    post "users/downgrade"
   end
 
   get 'downgrade' => 'charges#downgrade'
 
-  resources :users
+  resources :users, only: [:new, :create]
 
-  resources :charges
+  resources :charges, only: [:new, :create]
+  post "charges/new"
 
   # get 'welcome/index'
   #
