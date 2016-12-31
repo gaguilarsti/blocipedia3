@@ -11,9 +11,15 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: 'registrations' }
 
-  resources :users, only: [:new, :create]
+  devise_scope :user do
+    get "users/show"
+  end
 
-  resources :charges, only: [:new, :create]
+  get 'downgrade' => 'charges#downgrade'
+
+  resources :users
+
+  resources :charges
 
   # get 'welcome/index'
   #

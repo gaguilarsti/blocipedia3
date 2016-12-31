@@ -1,11 +1,17 @@
 <br>
 <div class="jumbotron">
   <h1>Blocipedia</h1>
-  <p>Blocipedia is like Wikipedia, but not as good.  :( </p>
+
 
   <% if user_signed_in? %>
-    <p>What are you waiting for?  Create and add to Wikis!</p>
+    <p>Welcome <%= current_user.name %>! </p>
+    <% if current_user.standard? %>
+      <p> Want to create private Wiki's? <%= link_to "Upgrade Here.", new_charge_path %></p>
+    <% elsif current_user.premium? %>
+      <%= link_to "Downgrade to Standard", downgrade_url, data: {confirm: 'Are you sure you want to Downgrade to Standard?'} %>
+    <% end %>
   <% else %>
+      <p>Blocipedia is like Wikipedia, but not as good.  :( </p>
       <p>
       <%= link_to "Sign In", new_user_session_path %> or
       <%= link_to "Sign Up", new_user_registration_path, class: 'btn btn-primary' %> today!
@@ -20,13 +26,21 @@
   </div>
 
   <div class="col-md-4">
-    <h2>Like Wikipedia</h2>
-    <p>Very similar to Wikipedia but not really.</p>
+    <h2>And it's free!</h2>
+    <p>Create and contribute to as many public wiki's as you want and that exist.  No charges, ever for highly valuable public knowledge.</p>
   </div>
 
   <div class="col-md-4">
-    <h2>But not as good!</h2>
-    <p>Blocipedia will suck compared to Wikipedia.  Really, it will.</p>
+    <h2>Premium Plan</h2>
+    <% if user_signed_in? %>
+      <% if current_user.standard? %>
+        <p>Create private wiki's and keep your valuable IP within your circle of trust.  Upgrade <%= link_to "here", new_charge_path %></p>
+      <% elsif current_user.premium? %>
+        <p>You are already a premium member!  Collaborate in shadows as much as you want!</p>
+      <% end %>
+    <% else %>
+      <p>Blocipedia will suck compared to Wikipedia.  Really, it will.</p>
+    <% end %>
   </div>
 
 </div>

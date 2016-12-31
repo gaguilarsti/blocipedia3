@@ -1,0 +1,19 @@
+
+<h2><%=current_user.name%> </h2>
+<small>
+  <%= pluralize(current_user.wikis.count, 'Wikis') %> created
+</small>
+<br></br>
+<p>Email: <%= current_user.email %></p>
+<p>Account: <%= current_user.role %> </p>
+
+<% if current_user.standard? %>
+  <h3>Want private Wikis? </h3>
+  <p>Upgrade to an awesome premium account for next to nothing!
+  <%= button_to "Upgrade now!", new_charge_path, class: 'btn btn-primary' %>
+
+<% elsif current_user.premium? %>
+  <h5>Not loving the premium experience?</h5>
+  <%= button_to "Downgrade my account", downgrade_url, data: { confirm: "Are you sure?  Note: Your Wikis will all become public!" }, class: 'btn btn-default' %>
+<% end %>
+<%= link_to "Edit Profile", edit_user_registration_path, class: 'btn btn-default' %>

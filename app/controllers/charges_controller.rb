@@ -2,8 +2,6 @@ class ChargesController < ApplicationController
 
   after_action :upgrade_account, only: [:create]
 
-  @amount = 15_00
-
   def new
     authorize :charges, :new?
 
@@ -18,12 +16,12 @@ class ChargesController < ApplicationController
     @stripe_btn_data = {
       key: "#{ Rails.configuration.stripe[:publishable_key] }",
       description: "Blocipedia Premium Account - #{current_user.email}",
-      amount: @amount
+      amount: Amount.default
     }
   end
 
   def create
-    authorize :charges, :create? 
+    authorize :charges, :create?
 
     customer = Stripe::Customer.create(
       email: current_user.email,
@@ -32,7 +30,7 @@ class ChargesController < ApplicationController
 
     charge = Stripe::Charge.create(
       customer: customer.id,
-      amount: @amount,
+      amount: Amount.default,
       description: 'Blocipedia Premium Account - #{current_user.email}',
       currency: 'usd'
     )
@@ -45,6 +43,16 @@ class ChargesController < ApplicationController
       flash[:error] = e.message
       redirect_to new_charge_path
 
+  end
+
+  def downgrade
+    # current_user.wikis.each do |wiki|
+    #   wiki.update_attributes!(private: false)
+    # end
+
+    current_user.update_attribute(:role, 'standard')
+    flash[:notice] = "You're account has been downgraded to a standard account."
+    redirect_to wikis_path
   end
 
   private
