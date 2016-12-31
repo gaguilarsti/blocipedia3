@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     post "users/downgrade"
   end
 
-  get 'downgrade' => 'charges#downgrade'
+  get 'downgrade' => 'users#downgrade'
 
   resources :users, only: [:new, :create]
 
