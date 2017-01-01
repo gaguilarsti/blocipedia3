@@ -3,6 +3,13 @@
   submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.name %>
 </small>
 
+
+<% if @wiki.private? %>
+  <h6>Private Wiki</h6>
+<% else %>
+  <h6>Public Wiki </h6>
+<% end %>
+
 <div class="row">
   <div class="col-md-8">
     <p class="lead"><%= @wiki.body %></p>

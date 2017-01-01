@@ -22,15 +22,7 @@
         <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter wiki description here." %>
       </div>
 
-      <% if current_user.premium? || current_user.admin? %>
-        <div class="form-group">
-          <%= f.label :private, class: 'checkbox' do %>
-            <%= f.check_box :private %> Make this a private wiki?
-          <% end %>
-        </div>
-      <% else %>
-        Want to make this a private Wiki? <%= link_to "Upgrade Here.", new_charge_path %>
-      <% end %>
+      <%= render partial: 'wikis/form', locals: { f: f } %>
 
       </br>
 

@@ -15,6 +15,11 @@
             <%= wiki.body %>
           </small>
 
+          <% if wiki.private? %>
+            <h6>Private Wiki</h6>
+          <% end %>
+
+
         </div>
       </div>
     <% end %>

@@ -1,16 +1,21 @@
 class WikisController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  # before_action :authenticate_user!, except: [:index, :show]
 
 
   def index
     #anyone can see all Wikis
     @wikis = Wiki.all
 
+    #only show private wikis to those that are admins or premium users
+    @wikis = Wiki.visible_to(current_user)
+
   end
 
   def show
     #anyone can see an indvidual wiki
     @wiki = Wiki.find(params[:id])
+
+    authorize @wiki
   end
 
   def new
@@ -25,6 +30,8 @@ class WikisController < ApplicationController
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
     @wiki.user = current_user
+    @wiki.private = params[:wiki][:private]
+
 
     authorize Wiki
 
@@ -41,7 +48,7 @@ class WikisController < ApplicationController
     #only logged in users can edit wikis
     @wiki = Wiki.find(params[:id])
 
-    authorize Wiki
+    authorize @wiki
   end
 
   def update
@@ -49,6 +56,7 @@ class WikisController < ApplicationController
     @wiki = Wiki.find(params[:id])
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
+    @wiki.private = params[:wiki][:private]
 
     authorize Wiki
 
@@ -73,7 +81,7 @@ class WikisController < ApplicationController
     else
       flash.now[:alert] = "There was an error deleting the Wiki.  Please try again."
       render :show
-      redirect_to @wiki 
+      redirect_to @wiki
     end
   end
 

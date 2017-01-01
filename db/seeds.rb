@@ -8,7 +8,7 @@
 
 require 'random_data'
 
-#create users
+#create standard users
 5.times do
   User.create!(
     name: Faker::Name.name,
@@ -69,6 +69,17 @@ user.update_attributes!(
   # role: 'admin'
 )
 
+#create premium user
+premium_user = User.create!(
+  name: 'Premium User',
+  email: 'premium@user.test',
+  password: 'helloworld',
+  role: 'premium'
+)
+
+#create private wikis for premium user
+
+
 #create an admin user
 admin = User.create!(
   name: 'Admin User',
@@ -76,6 +87,17 @@ admin = User.create!(
   password: 'helloworld',
   role: 'admin'
 )
+
+#create private wikis
+5.times do
+  Wiki.create!(
+    title: Faker::Lorem.sentence,
+    body: Faker::Lorem.paragraph(3),
+    user: admin, 
+    private: true
+  )
+end
+
 #
 # #create a member user
 # member = User.create!(
