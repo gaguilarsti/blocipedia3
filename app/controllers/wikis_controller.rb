@@ -26,12 +26,13 @@ class WikisController < ApplicationController
 
   def create
     #only logged in users can create wikis
-    @wiki = Wiki.new
-    @wiki.title = params[:wiki][:title]
-    @wiki.body = params[:wiki][:body]
-    @wiki.user = current_user
-    @wiki.private = params[:wiki][:private]
+    # @wiki = Wiki.new
+    # @wiki.title = params[:wiki][:title]
+    # @wiki.body = params[:wiki][:body]
+    # @wiki.user = current_user
+    # @wiki.private = params[:wiki][:private]
 
+    @wiki = Wiki.new(wiki_params)
 
     authorize Wiki
 
@@ -53,12 +54,16 @@ class WikisController < ApplicationController
 
   def update
     # only logged in users can update wikis
-    @wiki = Wiki.find(params[:id])
-    @wiki.title = params[:wiki][:title]
-    @wiki.body = params[:wiki][:body]
-    @wiki.private = params[:wiki][:private]
+    # @wiki = Wiki.find(params[:id])
+    # @wiki.title = params[:wiki][:title]
+    # @wiki.body = params[:wiki][:body]
+    # @wiki.private = params[:wiki][:private]
 
-    authorize Wiki
+    @wiki = Wiki.find(params[:id])
+
+    @wiki.assign_attributes(wiki_params)
+
+    authorize @wiki
 
     if @wiki.save
       flash[:notice] = "Wiki was updated."
@@ -86,6 +91,10 @@ class WikisController < ApplicationController
   end
 
   private
+
+  def wiki_params
+    params.require(:wiki).permit(:title, :body, :private)
+  end
 
   def authorize_user
     @wiki = Wiki.find(params[:id])
