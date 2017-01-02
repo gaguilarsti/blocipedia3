@@ -24,6 +24,8 @@ gem 'devise'
 #gem 'bcrypt'
 gem 'pundit'
 gem 'stripe'
+gem 'redcarpet', '~> 3.2.2'
+gem 'pygments.rb', '~> 0.6.0'
 
 group :development, :test do
   gem 'byebug'

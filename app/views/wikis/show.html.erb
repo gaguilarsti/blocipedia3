@@ -12,7 +12,7 @@
 
 <div class="row">
   <div class="col-md-8">
-    <p class="lead"><%= @wiki.body %></p>
+    <p class="lead"><%= markdown(@wiki.body) %></p>
 
     <%= link_to "Edit Wiki", edit_wiki_path, class: 'btn btn-success' %>
     <%= link_to "Delete Wiki", @wiki, method: :delete, class: 'btn btn-danger' %>
