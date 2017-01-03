@@ -28,6 +28,13 @@
 
       </br>
 
+      <%= render partial: 'wikis/collaborators', locals: { f: f } %>
+
+      </br>
+
+      <%= render partial: 'wikis/remove_collaborators', locals: { f: f } %>
+
+
       <%= f.submit "Save", class: 'btn btn-success' %>
 
     <% end %>

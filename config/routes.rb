@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
 
-  resources :wikis
+  resources :wikis do
+    member do
+      put :add_collaborator
+      put :remove_collaborator
+    end
+  end
 
   resources :collaborators
 

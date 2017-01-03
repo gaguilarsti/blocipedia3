@@ -1,22 +1,29 @@
 <h1><%= @wiki.title %></h1>
 <small>
-  submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.name %>
+  Created <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.name %> |
+  <% if @wiki.private? %>
+    Private Wiki
+  <% else %>
+    Public Wiki
+  <% end %>
 </small>
-
-
-<% if @wiki.private? %>
-  <h6>Private Wiki</h6>
-<% else %>
-  <h6>Public Wiki </h6>
-<% end %>
 
 <div class="row">
   <div class="col-md-8">
-    <p class="lead"><%= markdown(@wiki.body) %></p>
-
     <%= link_to "Edit Wiki", edit_wiki_path, class: 'btn btn-success' %>
     <%= link_to "Delete Wiki", @wiki, method: :delete, class: 'btn btn-danger' %>
 
+    <p class="lead"><%= markdown(@wiki.body) %></p>
+
+    <div class="collaborators">
+
+      <% if @wiki.collaborators.count > 0 %>
+        <strong>Collaborators</strong>
+          <% @wiki.collaborators.each do |c| %>
+            <small><%= c.name %> </small>
+          <% end %>
+      <% end %>  
+    </div>
 
   </div>
 

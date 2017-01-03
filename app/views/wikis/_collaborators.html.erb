@@ -1,0 +1,10 @@
+<% if @wiki.private? %>
+  <h4>Add collaborators</h4>
+  <%= form_for [@wiki, Collaborator.new], url: add_collaborator_wiki_path, method: :put do |f| %>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= text_field_tag :email, nil, placeholder: "Enter Collaborator Email here", class: 'form-control' %>
+      <%= f.submit 'Create Collaboration', class: 'btn btn-info submit-button' %>
+    </div>
+<% end %>
+<% end %>
