@@ -3,11 +3,8 @@ class WikisController < ApplicationController
 
 
   def index
-    #anyone can see all Wikis
-    @wikis = Wiki.all
-
     #only show private wikis to those that are admins or premium users
-    @wikis = Wiki.visible_to(current_user)
+    @wikis = policy_scope(Wiki)
 
   end
 
@@ -33,6 +30,10 @@ class WikisController < ApplicationController
     # @wiki.private = params[:wiki][:private]
 
     @wiki = Wiki.new(wiki_params)
+
+    # assign to properly scope the new wiki.
+    @wiki.user = current_user
+
 
     authorize Wiki
 

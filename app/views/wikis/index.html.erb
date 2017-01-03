@@ -12,7 +12,7 @@
           </h4>
 
           <small>
-            <%= wiki.body %>
+            <%= simple_format(wiki.body) %>
           </small>
 
           <% if wiki.private? %>
