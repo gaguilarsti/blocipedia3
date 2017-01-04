@@ -23,6 +23,8 @@
         <small>Blocipedia supports Markdown syntax.  Check out this <%= link_to 'page', 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet' %> for help on how to use markdown.</small>
       </div>
 
+      Number of Collaborators: <%= @wiki.collaborators.count %>
+
 
       <%= render partial: 'wikis/form', locals: { f: f } %>
 
@@ -31,9 +33,6 @@
       <%= render partial: 'wikis/collaborators', locals: { f: f } %>
 
       </br>
-
-      <%= render partial: 'wikis/remove_collaborators', locals: { f: f } %>
-
 
       <%= f.submit "Save", class: 'btn btn-success' %>
 

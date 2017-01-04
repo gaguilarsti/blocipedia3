@@ -11,7 +11,7 @@ class WikiPolicy < ApplicationPolicy
     if @wiki.private?
       @wiki.user == user || user.admin?
     else
-      @user.present?
+      true
     end
   end
 
@@ -29,7 +29,7 @@ class WikiPolicy < ApplicationPolicy
 
   def update?
     if @wiki.private?
-      @user.premium? || @user == @wiki.user || user.admin?
+      @user == @wiki.user || user.admin?
     else
       @user.present?
     end
@@ -44,34 +44,20 @@ class WikiPolicy < ApplicationPolicy
     @user.role == "admin" || @wiki.user == user
   end
 
-  def add_collaborator?
-    @user.premium? || @user.admin? || @wiki.user == user
-  end
-
-  def remove_collaborator?
-    add_collaborator?
-  end
-
-  class Scope
-     attr_reader :user, :scope
-
-     def initialize(user, scope)
-       @user = user
-       @scope = scope
-     end
+  class Scope < Scope
 
      def resolve
        wikis = []
       #  if user.role == 'admin'
       #    wikis = scope.all # if the user is an admin, show them all the wikis
-       if !user.present?
+       if !@user.present?
          all_wikis = scope.all
          all_wikis.each do |wiki|
            if !wiki.private?
              wikis << wiki # if the user is not signed in (e.g. guest), show them only public wikis
            end
          end
-       elsif user.role == 'premium'
+       elsif @user.role == 'premium'
          all_wikis = scope.all
          all_wikis.each do |wiki|
            if !wiki.private? || wiki.user == user || wiki.collaborators.include?(user)

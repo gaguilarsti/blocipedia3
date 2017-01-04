@@ -17,49 +17,8 @@ require 'random_data'
   )
 end
 
-users = User.all
 
-#Create wikis
 
-15.times do
-  Wiki.create!(
-    title: Faker::Lorem.sentence,
-    body: Faker::Lorem.paragraph(3),
-    user: users.sample
-  )
-end
-
-wikis = Wiki.all
-
-# #Create Posts
-# 50.times do
-#   #Adding a ! to the method instructs it raise an error if there's the problem with the data we're seeding.
-#   post = Post.create!(
-#   #Initially here, we referenced a class that doesn't exist.  This is wishful coding but ok.  :)
-#     user: users.sample,
-#     topic: topics.sample,
-#     title: RandomData.random_sentence,
-#     body: RandomData.random_paragraph
-#   )
-#
-#   post.update_attribute(:created_at, rand(10.minutes..1.year).ago)
-#
-#   rand(1..5).times { post.votes.create!(value: [-1, 1].sample, user: users.sample) }
-# end
-#
-# posts = Post.all
-
-# #Create comments
-# #using an integer on .times will make sure this thing will run x times.
-# 100.times do
-#   Comment.create!(
-#     user: users.sample,
-#     # call sample on the array returned by Post.all in order to pick a random post to associate with each comment.
-#     post: posts.sample,
-#     body: RandomData.random_paragraph
-#   )
-# end
-#
 #created a specific user (actually updated the first user) with my credentials so that we could easily sign in without manually creating a new user.
 user = User.first
 user.update_attributes!(
@@ -88,15 +47,48 @@ admin = User.create!(
   role: 'admin'
 )
 
-#create private wikis
+standard = User.create!(
+  name: 'Standard User',
+  email: 'standard@example.org',
+  password: 'helloworld',
+  role: 'standard'
+)
+
+users = User.all
+
+#Create wikis
+
+25.times do
+  Wiki.create!(
+    title: Faker::Lorem.sentence,
+    body: Faker::Lorem.paragraph(3),
+    user: users.sample
+  )
+end
+
+wikis = Wiki.all
+
+
+#create private wikis for admin
 5.times do
   Wiki.create!(
     title: Faker::Lorem.sentence,
     body: Faker::Lorem.paragraph(3),
-    user: admin, 
+    user: admin,
     private: true
   )
 end
+
+#create private wikis for premium
+5.times do
+  Wiki.create!(
+    title: Faker::Lorem.sentence,
+    body: Faker::Lorem.paragraph(3),
+    user: premium_user,
+    private: true
+  )
+end
+
 
 #
 # #create a member user

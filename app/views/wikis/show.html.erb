@@ -17,12 +17,16 @@
 
     <div class="collaborators">
 
-      <% if @wiki.collaborators.count > 0 %>
-        <strong>Collaborators</strong>
+      <% if @wiki.collaborators.exists? %>
+        <strong>Collaborators:</strong>
+          <ul>
           <% @wiki.collaborators.each do |c| %>
-            <small><%= c.name %> </small>
+
+            <li><small><%= c.user.name %> </small></li>
+
           <% end %>
-      <% end %>  
+          </ul>
+      <% end %>
     </div>
 
   </div>

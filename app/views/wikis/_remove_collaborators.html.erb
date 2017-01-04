@@ -1,9 +1,0 @@
-<% if @wiki.collaborators.count > 0 %>
-
-  <h4>Remove collaborators </h4>
-
-    <% wiki.collaborators.each do |collaborator| %>
-      <% collaborator.email %> | <%= link_to 'Remove', remove_collaborator_wiki_path(id: @wiki.id, collaborator_id: collaborator.id), data: { confirm: "Are you sure you want to remove this collaborator from this wiki?" }, method: :put %>
-    <% end %>
-
-<% end %>

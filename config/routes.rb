@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
 
   resources :wikis do
-    member do
-      put :add_collaborator
-      put :remove_collaborator
-    end
+    resources :collaborators, only: [:new, :create, :destroy]
   end
 
   resources :collaborators

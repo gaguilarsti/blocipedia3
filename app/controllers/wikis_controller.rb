@@ -17,9 +17,10 @@ class WikisController < ApplicationController
   end
 
   def new
+    @user = current_user
     #only logged in users can create wikis
     @wiki = Wiki.new
-    authorize Wiki
+    authorize @wiki
   end
 
   def create
@@ -30,13 +31,15 @@ class WikisController < ApplicationController
     # @wiki.user = current_user
     # @wiki.private = params[:wiki][:private]
 
+    @user = current_user
+
     @wiki = Wiki.new(wiki_params)
 
     # assign to properly scope the new wiki.
     @wiki.user = current_user
 
 
-    authorize Wiki
+    authorize @wiki
 
     if @wiki.save
       flash[:notice] = "Wiki was successfully created."
@@ -53,6 +56,8 @@ class WikisController < ApplicationController
 
     @users = User.all
 
+    @collaborator = Collaborator.new
+
     authorize @wiki
   end
 
@@ -65,11 +70,11 @@ class WikisController < ApplicationController
 
     @wiki = Wiki.find(params[:id])
 
-    @wiki.assign_attributes(wiki_params)
+    #@wiki.assign_attributes(wiki_params)
 
     authorize @wiki
 
-    if @wiki.save
+    if @wiki.update(wiki_params)
       flash[:notice] = "Wiki was updated."
       redirect_to @wiki
     else
@@ -78,50 +83,7 @@ class WikisController < ApplicationController
     end
   end
 
-  def add_collaborator
-    authorize :wiki, :add_collaborator?
 
-    #find the user that you want to add as a collaborator's email because people will add collaborators as via their email address.
-    user_email = params[:email]
-    #find the user_id for that collaborator
-    user_id = User.where(email: user_email).pluck(:id)
-    #referenc the user by their user id.
-    user = User.where(id: user_id)
-    #find the wiki in which you'll be adding collaborators
-    @wiki = Wiki.find(params[:id])
-
-    if !user.exists? #if the user does not exists
-      flash[:alert] = "That user doesn't exist, try adding a different user"
-    elsif @wiki.collaborators.where(id: user).exists? #if the user is already a collaborator on the wiki
-      flash[:alert] = "#{user.name} is already a collaborator on this wiki."
-    else
-      @wiki.collaborators << user # add the user to collaborators table
-      flash[:notice] = "#{user.name} was successfully added as a collaborator to this wiki!"
-    end
-
-    redirect_to @wiki
-  end
-
-  def remove_collaborator
-    authorize :wiki, :remove_collaborator?
-
-    #find the wiki to remove the collaborator
-    @wiki = Wiki.find(params[:id])
-
-    #I don't get this - shouldn't we need to get the collaborator to be removed via their email?
-    collaborator_id = params[:collaborator_id]
-
-    collaborator_user_id = @wiki.collaborators.where(id: user).pluck(:id)
-
-    collaborator = User.where(id: collaborator_user_id)
-
-    #remove user from wiki.collaborators array
-    @wiki.collaborators.delete(collaborator_id)
-    flash[:notice] = "#{collaborator.name} has been removed as a collaborator on this wiki."
-
-    redirect_to @wiki
-
-  end
 
   def destroy
     #only the wiki owner or admin can delete wikis
@@ -142,13 +104,13 @@ class WikisController < ApplicationController
   private
 
   def wiki_params
-    params.require(:wiki).permit(:title, :body, :private)
+    params.require(:wiki).permit(:title, :body, :user, :user_id, :private)
   end
 
   def clear_collaborators
     @wiki = Wiki.find(params[:id])
     if !@wiki.private?
-      @wiki.collaborators.clear 
+      @wiki.collaborators.clear
     end
 
   end
