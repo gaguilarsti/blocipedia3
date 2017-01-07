@@ -7,6 +7,10 @@
 				<div>
 				<%= link_to "Remove Collaborator", wiki_collaborator_path(@wiki, @wiki.collaborators.find_by_user_id(user.id).id), method: :delete, class: 'btn btn-danger' %>
 				</div>
+				<% elsif user == current_user %>
+					<div>
+					(Wiki Owner) 
+					</div>
 			<% else %>
 				<div>
 				<%= link_to "Add Collaborator", wiki_collaborators_path(@wiki, user_id: user.id), method: :post, class: 'btn btn-info' %>

@@ -17,3 +17,10 @@
   <%= button_to "Downgrade my account", users_downgrade_path, data: { confirm: "Are you sure?  Note: Your Wikis will all become public!" }, class: 'btn btn-default' %>
 <% end %>
 <%= link_to "Edit Profile", edit_user_registration_path, class: 'btn btn-default' %>
+
+<h3>Posts</h3>
+<% if user_has_wikis?(current_user) %>
+  <%= render current_user.wikis %>
+<% else %>
+  <p><%= @user.name %> has no posts.</p>
+<% end %>

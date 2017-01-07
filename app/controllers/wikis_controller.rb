@@ -1,4 +1,11 @@
 class WikisController < ApplicationController
+  include ApplicationHelper
+
+  include Pundit
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+
   # before_action :authenticate_user!, except: [:index, :show]
 
   after_action :clear_collaborators, only: :update # removes collaborators if wiki is made public
@@ -14,6 +21,8 @@ class WikisController < ApplicationController
     @wiki = Wiki.find(params[:id])
 
     authorize @wiki
+
+    @wikis = Wiki.all
   end
 
   def new
@@ -121,6 +130,11 @@ class WikisController < ApplicationController
       flash[:alert] = "You don't have permissions to do that."
       redirect_to @wiki
     end
+  end
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || wikis_path)
   end
 
 end
