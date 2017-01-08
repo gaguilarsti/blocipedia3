@@ -2,29 +2,7 @@
 
 <div class="row">
   <div class="col-md-8">
-
-    <% @wikis.each do |wiki| %>
-      <div class="media">
-        <div class="media-body">
-
-          <h4 class="media-heading">
-            <%= link_to wiki.title, wiki %>
-          </h4>
-
-          <small>
-            <%= simple_format(wiki.body) %>
-          </small>
-
-          <% if wiki.private? %>
-            <h6>Private Wiki</h6>
-          <% else %>
-            <h6>Public Wiki</h6>
-          <% end %>
-
-
-        </div>
-      </div>
-    <% end %>
+    <%= render partial: 'wikis/wikipreview' %>
   </div>
 
   <% if user_is_authorized_for_wikis? %>

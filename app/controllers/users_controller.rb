@@ -21,6 +21,11 @@ class UsersController < ApplicationController
     redirect_to wikis_path
   end
 
+  def show
+    @wikis = policy_scope(User)
+    user = current_user
+  end
+
 
   # if @user.save
   #   flash[:notice] = "Welcome to Blocipedia #{@user.name}"

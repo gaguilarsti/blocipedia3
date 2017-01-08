@@ -29,7 +29,7 @@ class WikiPolicy < ApplicationPolicy
 
   def update?
     if @wiki.private?
-      @user == @wiki.user || user.admin?
+      @user == @wiki.user || user.admin? || wiki.users.include?(@user)
     else
       @user.present?
     end
@@ -68,7 +68,7 @@ class WikiPolicy < ApplicationPolicy
          all_wikis = scope.all
          wikis = []
          all_wikis.each do |wiki|
-           if !wiki.private? || wiki.users.include?(user)
+           if !wiki.private? || wiki.user == @user || wiki.users.include?(@user)
              wikis << wiki # only show standard users public wikis and private wikis they are a collaborator on
            end
          end

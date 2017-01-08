@@ -1,0 +1,23 @@
+<% @wikis.each do |wiki| %>
+  <% if wiki.users.include?(current_user) %>
+    <div class="media">
+      <div class="media-body">
+
+        <h4 class="media-heading">
+          <%= link_to wiki.title, wiki %>
+        </h4>
+
+        <small>
+          <%= simple_format(wiki.body) %>
+        </small>
+
+        <% if wiki.private? %>
+          <h6>Private Wiki</h6>
+        <% else %>
+          <h6>Public Wiki</h6>
+        <% end %>
+
+      </div>
+    </div>
+  <% end %>  
+<% end %>

@@ -12,6 +12,10 @@
     <ul class="nav nav-tabs">
       <li> <%= link_to "Blocipedia", root_path %> </li>
       <li> <%= link_to "Wikis", wikis_path %> </li>
+      <li> <% if user_signed_in? %>
+              <%= link_to "My Wikis", users_show_path %>
+           <% end %>    
+       </li>
       <li> <%= link_to "About", about_path %> </li>
 
       <div class="pull-right user-info">
