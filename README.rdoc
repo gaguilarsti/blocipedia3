@@ -1,3 +1,7 @@
-## Blocipedia: n application that allows users to create public and private Markdown-based wikis.
+Blocipedia: A Ruby on Rails application that allows users to create public and private Markdown-based wikis, similar to Wikipedia.
+
+This project was created as part of the Bloc.io Full Stack Web Development Program.
+
+An online production version of this project can be found here: https://damp-reaches-60904.herokuapp.com/ 
 
 Made with my mentor at [Bloc](http://bloc.io).
